@@ -1,7 +1,14 @@
 import React, { useCallback } from "react";
 import TrainerInput from "./TrainerInput/TrainerInput.component";
 import { SessionStatus, TrainerSessionObservable } from "./utils/Session";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Stack,
+  Theme,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import { observer } from "mobx-react-lite";
 import SessionProvider from "../../providers/TrainerSession.provider";
 import Control from "./Control/Control.component";
@@ -12,6 +19,7 @@ const session = new TrainerSessionObservable();
 
 const Trainer = () => {
   const store = useStore();
+  const media = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
   const reset = useCallback(
     () => session.reset(SessionStatus.Pending),
@@ -31,11 +39,11 @@ const Trainer = () => {
 
   return (
     <SessionProvider session={session}>
-      <Stack direction={"row"}>
+      <Stack direction={media ? "column" : "row"} gap={4}>
         <Box flex={1}>
           <TrainerInput />
         </Box>
-        <Stack rowGap={3} ml={2}>
+        <Stack rowGap={3}>
           <Control>
             <Button onClick={session.start} fullWidth>
               Новая сессия
