@@ -19,7 +19,8 @@ const TrainerInput = () => {
 
   const onInput: FormEventHandler<HTMLInputElement> = useCallback(
     (e) => {
-      const char = e.nativeEvent.data;
+      const nativeEvent: InputEvent = e.nativeEvent as InputEvent;
+      const char = nativeEvent.data ?? "Backspace";
       session.processInput(char);
     },
     [session]
