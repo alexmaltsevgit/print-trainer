@@ -1,12 +1,25 @@
-import { makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { IStore } from "../types";
+import {
+  addObjectToLocalStorage,
+  getObjectFromLocalStorage,
+  LocalStorageKeys,
+} from "../../utils/localStorage";
+import { SessionInfo } from "./statistics.types";
 
 export class StatisticsStore implements IStore {
-  speedRecord = 0;
+  sessions: Array<SessionInfo> = getObjectFromLocalStorage(
+    LocalStorageKeys.Sessions,
+    []
+  );
 
   constructor() {
-    makeObservable(this, {
-      speedRecord: observable,
-    });
+    makeAutoObservable(this);
   }
+
+  addSessionInfo = (info: SessionInfo) => {
+    this.sessions.push(info);
+    // update local storage
+    addObjectToLocalStorage(LocalStorageKeys.Sessions, this.sessions);
+  };
 }
