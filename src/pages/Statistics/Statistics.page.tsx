@@ -18,7 +18,7 @@ const Statistics = () => {
     <Container>
       <Stack mt={10}>
         {sessions.length ? (
-          sessions.map((session) => (
+          [...sessions].reverse().map((session) => (
             <Accordion key={session.timestamp}>
               <AccordionSummary>
                 <Typography variant={"h5"}>
