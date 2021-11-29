@@ -1,48 +1,31 @@
-import { useState } from "react";
-import logo from "./logo.svg";
-import "./App.css";
-import store from "./store/store";
-
-store;
+import React from "react";
+import { Route, Switch } from "react-router";
+import Home from "./pages/Home/Home.page";
+import Header from "./components/Header/Header.component";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { useStore } from "./providers/Store.provider";
+import { observer } from "mobx-react-lite";
+import Statistics from "./pages/Statistics/Statistics.page";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const store = useStore();
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {" | "}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
-    </div>
+    <ThemeProvider theme={store.theme.current}>
+      <CssBaseline />
+      <Header />
+
+      <Switch>
+        <Route exact path={"/"}>
+          <Home />
+        </Route>
+
+        <Route exact path={"/statistics"}>
+          <Statistics />
+        </Route>
+      </Switch>
+    </ThemeProvider>
   );
 }
 
-export default App;
+export default observer(App);
